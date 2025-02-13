@@ -49,6 +49,8 @@ uint16_t Hrs3300_read_als(void)
 	return data;
 }
 
+
+
 bool Hrs3300_chip_init()
 {
 	int i =0 ;
@@ -101,4 +103,35 @@ void Hrs3300_chip_disable()
 	Hrs3300_write_reg( 0x0c, 0x02 );
 	
 	return ;	
+}
+
+uint8_t get_heart_rate()
+{
+  int16_t new_raw_data,  als_raw_data;
+  hrs3300_results_t alg_results;
+  uint8_t n;
+  hrs3300_bp_results_t  bp_alg_results ;
+  static uint16_t timer_index = 0;
+  new_raw_data = Hrs3300_read_hrs();
+  als_raw_data = Hrs3300_read_als();
+  Hrs3300_alg_send_data( new_raw_data,  als_raw_data, 0, 0, 0, 0);
+  timer_index ++;
+  if (timer_index >= 25)  {
+    timer_index = 0;
+    alg_results = Hrs3300_alg_get_results();
+    if (alg_results.alg_status == MSG_NO_TOUCH)
+    {
+      return 254;
+    }
+    else if (alg_results.alg_status == MSG_PPG_LEN_TOO_SHORT)
+    {
+      return 253;
+    }
+    else
+    {
+      bp_alg_results = Hrs3300_alg_get_bp_results();
+      return alg_results.hr_result;
+    }
+  }
+  return 255;
 }

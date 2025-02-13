@@ -11,6 +11,8 @@ void HRS3300_begin(i2c_read_type i2c_read,i2c_write_type i2c_write)
   _i2c_write = i2c_write;
   Hrs3300_chip_init();
   Hrs3300_chip_enable();
+  Hrs3300_set_exinf(0, 0, 0, 0, 0, 0);
+  Hrs3300_alg_open();
 }
 
 void HRS3300_enable(void)
@@ -25,12 +27,7 @@ void HRS3300_disable(void)
 
 uint8_t HRS3300_getHR(void)
 {
-  return Hrs3300_read_hrs();
-}
-
-uint8_t HRS3300_getALS(void)
-{
-  return Hrs3300_read_als();
+  return get_heart_rate();
 }
 
 void Hrs3300_write_reg(uint8_t addr, uint8_t data) 

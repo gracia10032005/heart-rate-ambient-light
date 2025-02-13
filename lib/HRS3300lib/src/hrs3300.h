@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+// #ifndef bool
+// #define bool unsigned char
+// #endif
 #define WHO_AM_3300  0x21
 typedef enum {
 	MSG_ALG_NOT_OPEN = 0x01,
@@ -47,8 +50,17 @@ void Hrs3300_chip_enable(void);
 void Hrs3300_chip_disable(void);
 uint16_t Hrs3300_read_hrs(void);
 uint16_t Hrs3300_read_als(void);
+void Hrs3300_set_exinf(uint8_t age, uint8_t height, uint8_t weight , uint8_t gender , uint8_t ref_sbp , uint8_t ref_dbp);
 void Hrs3300_write_reg(uint8_t addr, uint8_t data);
 uint8_t Hrs3300_read_reg(uint8_t addr);
+hrs3300_results_t Hrs3300_alg_get_results(void);
+hrs3300_bp_results_t Hrs3300_alg_get_bp_results(void);
+extern bool Hrs3300_alg_open(void);
+extern void Hrs3300_bp_alg_open(void);
+extern bool Hrs3300_alg_send_data(int16_t new_raw_data, int16_t als_raw_data, int16_t gsen_data_x, int16_t gsen_data_y, int16_t gsen_data_z, uint16_t timer_time);
+extern bool Hrs3300_bp_alg_send_data(int16_t new_raw_data);
+extern void Hrs3300_alg_close(void);
+uint8_t get_heart_rate(void);
 
 #ifdef __cplusplus
  }

@@ -16,6 +16,4 @@ void HRS3300_disable(void);
 	
 uint8_t HRS3300_getHR(void);
 
-uint8_t HRS3300_getALS(void);
-
 #endif
